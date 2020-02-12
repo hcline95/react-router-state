@@ -1,8 +1,9 @@
-import { Link } from 'react-router-dom'
+import { Link, Switch, Route } from 'react-router-dom'
 import React from 'react'
 import _ from 'lodash'
+import EditPlayer from './editPlayer'
 
-const Player = ({playerId, players}) => {
+const Player = ({playerId, players, editPlayer}) => {
   const player = _.find(players, { number: playerId });
 
   if (!player) {
@@ -12,8 +13,16 @@ const Player = ({playerId, players}) => {
     <div>
       <h1>{player.name} (#{player.number})</h1>
       <h2>Position: {player.position}</h2>
+      <h4 key={player.number}>
+      <Link to={`/roster/${player.number}/edit`}>Edit {player.name}</Link>
+      </h4>
       <Link to='/roster'>Back</Link>
-    </div>
+      <Switch>
+      <Route path='/roster/:number/edit' render={() => (
+        <EditPlayer player={player} editPlayer={editPlayer} />
+      )}/>
+      </Switch>
+</div>
   )
 }
 
